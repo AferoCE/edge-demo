@@ -12,12 +12,27 @@
 #include <aflib.h>
 
 /* "battery level" on the d-link hub */
-#define ATTR_BATTERY_LEVEL 3
 #define ATTR_SIREN_ENABLED 1
+#define ATTR_SIREN_PATTERN 2
+#define ATTR_BATTERY_LEVEL 3
+#define ATTR_BATTERY_CHARGE 4
+#define ATTR_SIREN_DURATION 5
+#define ATTR_DEV_SER_NUM 6
+#define ATTR_PLAT_VER_NUM 7
+#define ATTR_HUB_VER_NUM 8
+
+#define verCount 5
 
 /* for demo purposes, pretend the battery level drains every 15 seconds */
+
+static bool g_siren_enabled = 0;
+static int8_t g_siren_pattern = 0;
 static int8_t g_battery = 100;
-static int8_t g_siren_enabled = 0;
+static bool g_battery_charging = 1;
+static int16_t g_siren_duration = 10;
+static char g_dev_serNum[] = "1.0.0";
+static char g_plat_verNum[] = "1.0.0";
+static char g_hub_verNum[] = "1.0.0";
 
 static bool set_handler(const uint8_t request_id, const uint16_t attr_id, const uint16_t value_len, const uint8_t *value) {
     char hex_buffer[1024];
@@ -64,8 +79,14 @@ int main(int argc, char **argv) {
     /*
      * after starting, we must call "set" for every attribute we control.
      */
-    aflib_set_attribute_i8(ATTR_SIREN_ENABLED, g_siren_enabled);
+    aflib_set_attribute_bool(ATTR_SIREN_ENABLED, g_siren_enabled);
+    aflib_set_attribute_i8(ATTR_SIREN_PATTERN, g_siren_pattern);
     aflib_set_attribute_i8(ATTR_BATTERY_LEVEL, g_battery);
+    aflib_set_attribute_bool(ATTR_BATTERY_CHARGE, g_battery_charging);
+    aflib_set_attribute_i16(ATTR_SIREN_DURATION, g_siren_duration);
+    aflib_set_attribute_str(ATTR_DEV_SER_NUM, verCount, g_dev_serNum);
+    aflib_set_attribute_str(ATTR_PLAT_VER_NUM, verCount, g_plat_verNum);
+    aflib_set_attribute_str(ATTR_HUB_VER_NUM, verCount, g_hub_verNum);
 
     AFLOG_INFO("EDGE DEMO: online & monitoring");
 
