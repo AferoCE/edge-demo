@@ -3,7 +3,7 @@ AUTOMAKE_OPTIONS = subdir-objects
 bin_PROGRAMS = edge_demo
 
 edge_demo_CFLAGS = -std=gnu99 -Wall -Werror -Wl,--no-undefined
-edge_demo_LDADD = -L. -laf_edge -laf_attr -lpthread -levent -laf_ipc -laf_util
+edge_demo_LDADD = -L. -laf_edge -lpthread -levent -laf_ipc -laf_util -laf_attr
 
 edge_demo_SOURCES = \
     demo/demo.c                             \
